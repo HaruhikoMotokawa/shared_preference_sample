@@ -58,5 +58,21 @@ final backgroundColorNumberProvider = AutoDisposeStreamProvider<int?>.internal(
 );
 
 typedef BackgroundColorNumberRef = AutoDisposeStreamProviderRef<int?>;
+String _$titleTextHash() => r'3652d977542f8a61cae873e7512c9a9353958e18';
+
+///
+///
+/// Copied from [titleText].
+@ProviderFor(titleText)
+final titleTextProvider = AutoDisposeStreamProvider<String?>.internal(
+  titleText,
+  name: r'titleTextProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$titleTextHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TitleTextRef = AutoDisposeStreamProviderRef<String?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
