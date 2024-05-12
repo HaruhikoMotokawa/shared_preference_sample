@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preference_sample/data/local_sources/shared_preference.dart';
+import 'package:shared_preference_sample/logger.dart';
 
 /// キーバリューペアを管理するための抽象インターフェース
 abstract interface class KeyValueRepositoryBase {
@@ -28,6 +29,9 @@ abstract interface class KeyValueRepositoryBase {
 
   /// タイトルのテキストを設定する
   Future<void> setTitleText(String? value);
+
+  /// 全てのデータを初期化
+  Future<void> initData();
 }
 
 /// アプリケーションのキー・バリュー設定を管理するクラス
@@ -71,6 +75,17 @@ class KeyValueRepository implements KeyValueRepositoryBase {
 
   @override
   Future<void> setTitleText(String? value) => _set(titleTextKey, value);
+
+  @override
+  Future<void> initData() async {
+    final pref = await ref.read(sharedPreferencesProvider.future);
+    final result = await pref.clear();
+    logger.d(result);
+    _onValueChanged
+      ..add(iconSettingKey)
+      ..add(backgroundColorNumberKey)
+      ..add(titleTextKey);
+  }
 
   /// 指定されたキーに関連付けられたデータをSharedPreferencesから取得します。
   ///
