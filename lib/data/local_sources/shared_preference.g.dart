@@ -6,9 +6,11 @@ part of 'shared_preference.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sharedPreferencesHash() => r'88040d40c4186f1d7d8f338e77c005c55d10e289';
+String _$sharedPreferencesHash() => r'22d967c5be52b1ec2df81250b5792244642d46ff';
 
-/// See also [sharedPreferences].
+/// SharedPreferencesのインスタンスを非同期に生成
+///
+/// Copied from [sharedPreferences].
 @ProviderFor(sharedPreferences)
 final sharedPreferencesProvider = FutureProvider<SharedPreferences>.internal(
   sharedPreferences,
