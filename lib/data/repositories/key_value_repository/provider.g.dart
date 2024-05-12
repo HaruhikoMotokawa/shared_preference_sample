@@ -41,7 +41,7 @@ final iconSettingProvider = AutoDisposeStreamProvider<bool?>.internal(
 
 typedef IconSettingRef = AutoDisposeStreamProviderRef<bool?>;
 String _$backgroundColorNumberHash() =>
-    r'7fb966ba960a60b03c7e09c0047bb744751b7027';
+    r'0be40d4bdcb71afe619ca0cbe9832d48c9c5802f';
 
 ///
 ///
