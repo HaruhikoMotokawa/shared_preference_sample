@@ -26,7 +26,9 @@ final keyValueRepositoryProvider = Provider<KeyValueRepositoryBase>.internal(
 typedef KeyValueRepositoryRef = ProviderRef<KeyValueRepositoryBase>;
 String _$iconSettingHash() => r'15c8a9e1f504032cff23207a2eccde095d9de2a9';
 
-///
+/// アイコン設定の値を提供するStreamを生成
+/// `IconSettingRef`を通じてリポジトリにアクセスし、現在のアイコン設定を取得し、
+/// その後、アイコン設定が変更されるたびに新しい値を提供します。
 ///
 /// Copied from [iconSetting].
 @ProviderFor(iconSetting)
@@ -43,7 +45,7 @@ typedef IconSettingRef = AutoDisposeStreamProviderRef<bool?>;
 String _$backgroundColorNumberHash() =>
     r'0be40d4bdcb71afe619ca0cbe9832d48c9c5802f';
 
-///
+/// 背景色番号の値を提供するStreamを生成
 ///
 /// Copied from [backgroundColorNumber].
 @ProviderFor(backgroundColorNumber)
@@ -58,9 +60,9 @@ final backgroundColorNumberProvider = AutoDisposeStreamProvider<int?>.internal(
 );
 
 typedef BackgroundColorNumberRef = AutoDisposeStreamProviderRef<int?>;
-String _$titleTextHash() => r'3652d977542f8a61cae873e7512c9a9353958e18';
+String _$titleTextHash() => r'de402e0019246486f527a33f07a27696baf56aa1';
 
-///
+/// タイトルテキストの値を提供するStreamを生成
 ///
 /// Copied from [titleText].
 @ProviderFor(titleText)
