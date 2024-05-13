@@ -20,15 +20,28 @@ class MyHomePage extends ConsumerWidget {
               Flexible(
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final iconSetting =
-                        ref.watch(iconSettingProvider).asData?.value;
+                    final iconSetting = ref.watch(iconSettingProvider);
                     logger.d('アイコンのタイルを再ビルド');
-                    return ListTile(
-                      title: const Text('アイコンの表示・非表示'),
-                      trailing: switch (iconSetting) {
-                        true => const Icon(Icons.light),
-                        _ => null,
+                    return iconSetting.when(
+                      data: (data) {
+                        return ListTile(
+                          title: const Text('アイコンの設定'),
+                          trailing: switch (data) {
+                            true => const Icon(Icons.power),
+                            false => const Icon(Icons.power_off),
+                            _ => const Icon(Icons.clear),
+                          },
+                        );
                       },
+                      error: (err, stack) {
+                        logger.e(
+                          'エラー',
+                          error: err,
+                          stackTrace: stack,
+                        );
+                        return const Text('エラーです');
+                      },
+                      loading: () => const CircularProgressIndicator(),
                     );
                   },
                 ),
@@ -37,18 +50,30 @@ class MyHomePage extends ConsumerWidget {
                 child: Consumer(
                   builder: (context, ref, child) {
                     final backGroundColorNumber =
-                        ref.watch(backgroundColorNumberProvider).asData?.value;
-                    // TODO(self): ここは２回呼ばれるので正しいの？初回流して、
+                        ref.watch(backgroundColorNumberProvider);
                     logger.d('背景色のタイルを再ビルド');
-                    return ListTile(
-                      title: const Text('背景色の番号'),
-                      trailing: Text(backGroundColorNumber.toString()),
-                      tileColor: switch (backGroundColorNumber) {
-                        0 => Colors.transparent,
-                        1 => Colors.red,
-                        2 => Colors.blue,
-                        _ => Colors.grey,
+                    return backGroundColorNumber.when(
+                      data: (data) {
+                        return ListTile(
+                          title: const Text('背景色の番号'),
+                          trailing: Text(data.toString()),
+                          tileColor: switch (data) {
+                            0 => Colors.transparent,
+                            1 => Colors.red,
+                            2 => Colors.blue,
+                            _ => Colors.grey,
+                          },
+                        );
                       },
+                      error: (err, stack) {
+                        logger.e(
+                          'エラー',
+                          error: err,
+                          stackTrace: stack,
+                        );
+                        return const Text('エラーです');
+                      },
+                      loading: () => const CircularProgressIndicator(),
                     );
                   },
                 ),
@@ -56,12 +81,24 @@ class MyHomePage extends ConsumerWidget {
               Flexible(
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final titleText =
-                        ref.watch(titleTextProvider).asData?.value;
+                    final titleText = ref.watch(titleTextProvider);
                     logger.d('タイトルのタイルを再ビルド');
-                    return ListTile(
-                      title: const Text('タイトルの文字'),
-                      trailing: Text(titleText ?? '値がない'),
+                    return titleText.when(
+                      data: (data) {
+                        return ListTile(
+                          title: const Text('タイトルの文字'),
+                          trailing: Text(data ?? '値なし'),
+                        );
+                      },
+                      error: (err, stack) {
+                        logger.e(
+                          'エラー',
+                          error: err,
+                          stackTrace: stack,
+                        );
+                        return const Text('エラーです');
+                      },
+                      loading: () => const CircularProgressIndicator(),
                     );
                   },
                 ),
