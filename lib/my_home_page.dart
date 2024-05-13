@@ -22,6 +22,7 @@ class MyHomePage extends ConsumerWidget {
                   builder: (context, ref, child) {
                     final iconSetting =
                         ref.watch(iconSettingProvider).asData?.value;
+                    logger.d('アイコンのタイルを再ビルド');
                     return ListTile(
                       title: const Text('アイコンの表示・非表示'),
                       trailing: switch (iconSetting) {
@@ -37,7 +38,8 @@ class MyHomePage extends ConsumerWidget {
                   builder: (context, ref, child) {
                     final backGroundColorNumber =
                         ref.watch(backgroundColorNumberProvider).asData?.value;
-                    logger.d('再ビルド');
+                    // TODO(self): ここは２回呼ばれるので正しいの？初回流して、
+                    logger.d('背景色のタイルを再ビルド');
                     return ListTile(
                       title: const Text('背景色の番号'),
                       trailing: Text(backGroundColorNumber.toString()),
@@ -56,6 +58,7 @@ class MyHomePage extends ConsumerWidget {
                   builder: (context, ref, child) {
                     final titleText =
                         ref.watch(titleTextProvider).asData?.value;
+                    logger.d('タイトルのタイルを再ビルド');
                     return ListTile(
                       title: const Text('タイトルの文字'),
                       trailing: Text(titleText ?? '値がない'),

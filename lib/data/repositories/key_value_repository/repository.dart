@@ -81,6 +81,7 @@ class KeyValueRepository implements KeyValueRepositoryBase {
     final pref = await ref.read(sharedPreferencesProvider.future);
     final result = await pref.clear();
     logger.d(result);
+    // カスケード記法で重複する`_onValueChanged`を一つに省略している
     _onValueChanged
       ..add(iconSettingKey)
       ..add(backgroundColorNumberKey)

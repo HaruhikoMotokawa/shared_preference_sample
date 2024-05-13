@@ -64,7 +64,7 @@ Future<void> showSelectTitleBottomSheet(
   );
 }
 
-/// タイトルを選択するボトムシート
+/// アイコン設定を選択するボトムシート
 Future<void> showSelectIconSettingBottomSheet(
   BuildContext context,
   WidgetRef ref,

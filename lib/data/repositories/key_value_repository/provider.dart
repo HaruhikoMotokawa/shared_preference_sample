@@ -9,7 +9,7 @@ KeyValueRepositoryBase keyValueRepository(KeyValueRepositoryRef ref) {
   return KeyValueRepository(ref);
 }
 
-/// アイコン設定の値を提供するStreamを生成します。
+/// アイコン設定の値を提供するStreamを生成
 /// `IconSettingRef`を通じてリポジトリにアクセスし、現在のアイコン設定を取得し、
 /// その後、アイコン設定が変更されるたびに新しい値を提供します。
 Stream<bool?> iconSetting(IconSettingRef ref) async* {
@@ -27,7 +27,7 @@ Stream<bool?> iconSetting(IconSettingRef ref) async* {
   }
 }
 
-///
+/// 背景色番号の値を提供するStreamを生成
 @riverpod
 Stream<int?> backgroundColorNumber(BackgroundColorNumberRef ref) async* {
   final repository = ref.read(keyValueRepositoryProvider);
@@ -38,7 +38,7 @@ Stream<int?> backgroundColorNumber(BackgroundColorNumberRef ref) async* {
   }
 }
 
-///
+/// タイトルテキストの値を提供するStreamを生成
 @riverpod
 Stream<String?> titleText(TitleTextRef ref) async* {
   final repository = ref.read(keyValueRepositoryProvider);
