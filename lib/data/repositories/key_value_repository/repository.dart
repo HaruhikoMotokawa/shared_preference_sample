@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preference_sample/data/local_sources/shared_preference.dart';
+import 'package:shared_preference_sample/domains/custom_setting.dart';
 import 'package:shared_preference_sample/logger.dart';
 
 /// キーバリューペアを管理するための抽象インターフェース
@@ -30,6 +31,12 @@ abstract interface class KeyValueRepositoryBase {
   /// タイトルのテキストを設定する
   Future<void> setTitleText(String? value);
 
+  /// カスタム設定の値を取得する
+  Future<CustomSetting?> getCustomSetting();
+
+  /// カスタム設定の値を設定する
+  Future<void> setCustomSetting(CustomSetting? value);
+
   /// 全てのデータを初期化
   Future<void> initData();
 }
@@ -50,6 +57,9 @@ class KeyValueRepository implements KeyValueRepositoryBase {
 
   /// タイトルのキー
   static const titleTextKey = 'titleText';
+
+  /// カスタム設定のキー
+  static const customSettingKey = 'customSetting';
 
   /// 設定値の変更をアプリケーション全体にブロードキャストするための`StreamController`
   final _onValueChanged = StreamController<String>.broadcast();
@@ -75,6 +85,25 @@ class KeyValueRepository implements KeyValueRepositoryBase {
 
   @override
   Future<void> setTitleText(String? value) => _set(titleTextKey, value);
+
+  @override
+  Future<CustomSetting?> getCustomSetting() async {
+    final mapValue = await _get<Map<dynamic, dynamic>>(customSettingKey);
+    if (mapValue == null) {
+      return null;
+    }
+    final customSetting = CustomSetting.fromJson(mapValue.cast());
+    return customSetting;
+  }
+
+  @override
+  Future<void> setCustomSetting(CustomSetting? value) {
+    final json = switch (value) {
+      final v? => jsonEncode(v.toJson()),
+      _ => null,
+    };
+    return _set(customSettingKey, json);
+  }
 
   @override
   Future<void> initData() async {
