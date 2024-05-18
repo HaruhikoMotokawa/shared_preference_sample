@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
-import 'package:shared_preference_sample/presentations/my_home_page/custom_bottom_sheet.dart';
+import 'package:shared_preference_sample/shared/custom_bottom_sheet.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
