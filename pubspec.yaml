@@ -10,6 +10,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   # dio: ^5.4.3+1
   # envied: ^0.5.4+1
+  derry: ^1.5.0
   flutter:
     sdk: flutter
   # flutter_hooks:
@@ -47,3 +48,11 @@ flutter:
   # assets:
   #   - assets/hoge.png
   uses-material-design: true
+
+scripts:
+  # build_runnerを実行して、同じファイル名があれば古いものを削除する
+  br: flutter pub run build_runner build --delete-conflicting-outputs
+  #  Gradle デーモンプロセスを終了する => ビルドエラーの解消
+  gc: pkill -f '.*GradleDaemon.*'
+  # テストを実行しカバレッジをHTMLで出力してブラウザで開くスクリプト
+  cov: flutter test --coverage && lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused && genhtml coverage/new_lcov.info -o coverage/html && open coverage/html/index.html
