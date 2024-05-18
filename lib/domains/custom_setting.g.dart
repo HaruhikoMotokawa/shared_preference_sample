@@ -8,15 +8,14 @@ part of 'custom_setting.dart';
 
 _$CustomSettingImpl _$$CustomSettingImplFromJson(Map<String, dynamic> json) =>
     _$CustomSettingImpl(
-      isIconEnable: json['is_icon_enable'] as bool? ?? true,
-      backgroundColorNumber:
-          (json['background_color_number'] as num?)?.toInt() ?? 0,
-      titleText: json['title_text'] as String? ?? 'No Title',
+      iconSetting: json['icon_setting'] as bool?,
+      backgroundColorNumber: (json['background_color_number'] as num?)?.toInt(),
+      titleText: json['title_text'] as String?,
     );
 
 Map<String, dynamic> _$$CustomSettingImplToJson(_$CustomSettingImpl instance) =>
     <String, dynamic>{
-      'is_icon_enable': instance.isIconEnable,
+      'icon_setting': instance.iconSetting,
       'background_color_number': instance.backgroundColorNumber,
       'title_text': instance.titleText,
     };

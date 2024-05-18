@@ -11,11 +11,11 @@ class CustomSetting with _$CustomSetting {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory CustomSetting({
     // アイコン設定
-    @Default(true) bool isIconEnable,
+    bool? iconSetting,
     // 背景色番号
-    @Default(0) int backgroundColorNumber,
+    int? backgroundColorNumber,
     // タイトル
-    @Default('No Title') String titleText,
+    String? titleText,
   }) = _CustomSetting;
 
   factory CustomSetting.fromJson(Map<String, dynamic> json) =>

@@ -21,9 +21,9 @@ CustomSetting _$CustomSettingFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CustomSetting {
 // アイコン設定
-  bool get isIconEnable => throw _privateConstructorUsedError; // 背景色番号
-  int get backgroundColorNumber => throw _privateConstructorUsedError; // タイトル
-  String get titleText => throw _privateConstructorUsedError;
+  bool? get iconSetting => throw _privateConstructorUsedError; // 背景色番号
+  int? get backgroundColorNumber => throw _privateConstructorUsedError; // タイトル
+  String? get titleText => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +37,7 @@ abstract class $CustomSettingCopyWith<$Res> {
           CustomSetting value, $Res Function(CustomSetting) then) =
       _$CustomSettingCopyWithImpl<$Res, CustomSetting>;
   @useResult
-  $Res call({bool isIconEnable, int backgroundColorNumber, String titleText});
+  $Res call({bool? iconSetting, int? backgroundColorNumber, String? titleText});
 }
 
 /// @nodoc
@@ -53,23 +53,23 @@ class _$CustomSettingCopyWithImpl<$Res, $Val extends CustomSetting>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isIconEnable = null,
-    Object? backgroundColorNumber = null,
-    Object? titleText = null,
+    Object? iconSetting = freezed,
+    Object? backgroundColorNumber = freezed,
+    Object? titleText = freezed,
   }) {
     return _then(_value.copyWith(
-      isIconEnable: null == isIconEnable
-          ? _value.isIconEnable
-          : isIconEnable // ignore: cast_nullable_to_non_nullable
-              as bool,
-      backgroundColorNumber: null == backgroundColorNumber
+      iconSetting: freezed == iconSetting
+          ? _value.iconSetting
+          : iconSetting // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      backgroundColorNumber: freezed == backgroundColorNumber
           ? _value.backgroundColorNumber
           : backgroundColorNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      titleText: null == titleText
+              as int?,
+      titleText: freezed == titleText
           ? _value.titleText
           : titleText // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -82,7 +82,7 @@ abstract class _$$CustomSettingImplCopyWith<$Res>
       __$$CustomSettingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isIconEnable, int backgroundColorNumber, String titleText});
+  $Res call({bool? iconSetting, int? backgroundColorNumber, String? titleText});
 }
 
 /// @nodoc
@@ -96,23 +96,23 @@ class __$$CustomSettingImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isIconEnable = null,
-    Object? backgroundColorNumber = null,
-    Object? titleText = null,
+    Object? iconSetting = freezed,
+    Object? backgroundColorNumber = freezed,
+    Object? titleText = freezed,
   }) {
     return _then(_$CustomSettingImpl(
-      isIconEnable: null == isIconEnable
-          ? _value.isIconEnable
-          : isIconEnable // ignore: cast_nullable_to_non_nullable
-              as bool,
-      backgroundColorNumber: null == backgroundColorNumber
+      iconSetting: freezed == iconSetting
+          ? _value.iconSetting
+          : iconSetting // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      backgroundColorNumber: freezed == backgroundColorNumber
           ? _value.backgroundColorNumber
           : backgroundColorNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      titleText: null == titleText
+              as int?,
+      titleText: freezed == titleText
           ? _value.titleText
           : titleText // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -122,29 +122,24 @@ class __$$CustomSettingImplCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$CustomSettingImpl implements _CustomSetting {
   const _$CustomSettingImpl(
-      {this.isIconEnable = true,
-      this.backgroundColorNumber = 0,
-      this.titleText = 'No Title'});
+      {this.iconSetting, this.backgroundColorNumber, this.titleText});
 
   factory _$CustomSettingImpl.fromJson(Map<String, dynamic> json) =>
       _$$CustomSettingImplFromJson(json);
 
 // アイコン設定
   @override
-  @JsonKey()
-  final bool isIconEnable;
+  final bool? iconSetting;
 // 背景色番号
   @override
-  @JsonKey()
-  final int backgroundColorNumber;
+  final int? backgroundColorNumber;
 // タイトル
   @override
-  @JsonKey()
-  final String titleText;
+  final String? titleText;
 
   @override
   String toString() {
-    return 'CustomSetting(isIconEnable: $isIconEnable, backgroundColorNumber: $backgroundColorNumber, titleText: $titleText)';
+    return 'CustomSetting(iconSetting: $iconSetting, backgroundColorNumber: $backgroundColorNumber, titleText: $titleText)';
   }
 
   @override
@@ -152,8 +147,8 @@ class _$CustomSettingImpl implements _CustomSetting {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomSettingImpl &&
-            (identical(other.isIconEnable, isIconEnable) ||
-                other.isIconEnable == isIconEnable) &&
+            (identical(other.iconSetting, iconSetting) ||
+                other.iconSetting == iconSetting) &&
             (identical(other.backgroundColorNumber, backgroundColorNumber) ||
                 other.backgroundColorNumber == backgroundColorNumber) &&
             (identical(other.titleText, titleText) ||
@@ -163,7 +158,7 @@ class _$CustomSettingImpl implements _CustomSetting {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, isIconEnable, backgroundColorNumber, titleText);
+      Object.hash(runtimeType, iconSetting, backgroundColorNumber, titleText);
 
   @JsonKey(ignore: true)
   @override
@@ -181,19 +176,19 @@ class _$CustomSettingImpl implements _CustomSetting {
 
 abstract class _CustomSetting implements CustomSetting {
   const factory _CustomSetting(
-      {final bool isIconEnable,
-      final int backgroundColorNumber,
-      final String titleText}) = _$CustomSettingImpl;
+      {final bool? iconSetting,
+      final int? backgroundColorNumber,
+      final String? titleText}) = _$CustomSettingImpl;
 
   factory _CustomSetting.fromJson(Map<String, dynamic> json) =
       _$CustomSettingImpl.fromJson;
 
   @override // アイコン設定
-  bool get isIconEnable;
+  bool? get iconSetting;
   @override // 背景色番号
-  int get backgroundColorNumber;
+  int? get backgroundColorNumber;
   @override // タイトル
-  String get titleText;
+  String? get titleText;
   @override
   @JsonKey(ignore: true)
   _$$CustomSettingImplCopyWith<_$CustomSettingImpl> get copyWith =>
