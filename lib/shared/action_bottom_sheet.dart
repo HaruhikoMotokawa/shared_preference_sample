@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /// ボトムシートの原型
 ///
 /// ここでがグローバルで宣言しているが[ActionBottomSheet]のstatic methodで宣言してもいい
+/// 戻り値を[T]にして、特定の値を返すことができる関数にする
+/// null許容にしているのは、ボトムシートの外をタップしたりスワイプすると
+/// 何も選択しないでボトムシートを閉じられてしまう可能性があるから
 Future<T?> showActionBottomSheet<T>(
   BuildContext context, {
   required List<ActionItem<T>> actions,
@@ -62,7 +65,7 @@ class ActionItem<T> extends StatelessWidget {
   final String text;
 
   /// タップ処理を後で書きたい時のためにあえてnull許容にする
-  final T Function()? onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
