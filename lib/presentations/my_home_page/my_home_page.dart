@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preference_sample/custom_bottom_sheet.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/logger.dart';
+import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
+import 'package:shared_preference_sample/presentations/my_home_page/custom_bottom_sheet.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
@@ -123,21 +124,46 @@ class MyHomePage extends ConsumerWidget {
               const Divider(),
               ElevatedButton(
                 child: const Text('アイコンの表示と非表示を切り替え'),
-                onPressed: () {
-                  showSelectIconSettingBottomSheet(context, ref);
+                onPressed: () async {
+                  final result =
+                      await showSelectIconSettingBottomSheet(context);
+                  if (result != null) {
+                    await ref.read(keyValueRepositoryProvider).setIconSetting();
+                  }
                 },
               ),
               ElevatedButton(
                 child: const Text('背景色番号を設定'),
-                onPressed: () => showSelectColorBottomSheet(context, ref),
+                onPressed: () async {
+                  final result = await showSelectColorBottomSheet(context);
+                  if (result != null) {
+                    await ref
+                        .read(keyValueRepositoryProvider)
+                        .setBackgroundColorNumber(result);
+                  }
+                },
               ),
               ElevatedButton(
                 child: const Text('タイトルを選択'),
-                onPressed: () => showSelectTitleBottomSheet(context, ref),
+                onPressed: () async {
+                  final result = await showSelectTitleBottomSheet(context);
+                  if (result != null) {
+                    await ref
+                        .read(keyValueRepositoryProvider)
+                        .setTitleText(result);
+                  }
+                },
               ),
               ElevatedButton(
                 child: const Text('複数の条件を設定'),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<EditCustomSettingPage>(
+                      builder: (builder) => const EditCustomSettingPage(),
+                    ),
+                  );
+                },
               ),
               ElevatedButton(
                 child: const Text('shared_preferenceを初期化'),
