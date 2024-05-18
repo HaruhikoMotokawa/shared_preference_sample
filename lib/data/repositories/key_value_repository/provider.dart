@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/repository.dart';
+import 'package:shared_preference_sample/domains/custom_setting.dart';
 
 part 'provider.g.dart';
 
@@ -47,5 +48,16 @@ Stream<String?> titleText(TitleTextRef ref) async* {
   await for (final _ in repository.onValueChange
       .where((key) => key == KeyValueRepository.titleTextKey)) {
     yield await repository.getTileText();
+  }
+}
+
+/// タイトルテキストの値を提供するStreamを生成
+@riverpod
+Stream<CustomSetting?> customSetting(CustomSettingRef ref) async* {
+  final repository = ref.read(keyValueRepositoryProvider);
+  yield await repository.getCustomSetting();
+  await for (final _ in repository.onValueChange
+      .where((key) => key == KeyValueRepository.customSettingKey)) {
+    yield await repository.getCustomSetting();
   }
 }

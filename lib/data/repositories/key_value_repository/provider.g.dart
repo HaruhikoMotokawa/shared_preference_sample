@@ -76,5 +76,23 @@ final titleTextProvider = AutoDisposeStreamProvider<String?>.internal(
 );
 
 typedef TitleTextRef = AutoDisposeStreamProviderRef<String?>;
+String _$customSettingHash() => r'ec326a71e2a83a3a78a1ac87421b09f4eec1367e';
+
+/// タイトルテキストの値を提供するStreamを生成
+///
+/// Copied from [customSetting].
+@ProviderFor(customSetting)
+final customSettingProvider =
+    AutoDisposeStreamProvider<CustomSetting?>.internal(
+  customSetting,
+  name: r'customSettingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$customSettingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CustomSettingRef = AutoDisposeStreamProviderRef<CustomSetting?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
