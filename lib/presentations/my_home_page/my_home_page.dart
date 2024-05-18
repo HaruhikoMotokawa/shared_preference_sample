@@ -105,20 +105,39 @@ class MyHomePage extends ConsumerWidget {
                 ),
               ),
               Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      const Text('JSONで複数の設定'),
-                      const Spacer(),
-                      Expanded(
-                        child: Text(
-                          'text' * 20,
-                          softWrap: true,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final customSetting = ref.watch(customSettingProvider);
+                    logger.d('タイトルのタイルを再ビルド');
+                    return customSetting.when(
+                      data: (data) {
+                        return Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              const Text('JSONで複数の設定'),
+                              const Spacer(),
+                              Expanded(
+                                child: Text(
+                                  data.toString(),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (err, stack) {
+                        logger.e(
+                          'エラー',
+                          error: err,
+                          stackTrace: stack,
+                        );
+                        return const Text('エラーです');
+                      },
+                      loading: () => const CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
               const Divider(),
@@ -166,7 +185,7 @@ class MyHomePage extends ConsumerWidget {
                       context,
                       MaterialPageRoute<EditCustomSettingPage>(
                         builder: (builder) => EditCustomSettingPage(
-                          iconSetting: customSetting?.isIconEnable,
+                          iconSetting: customSetting?.iconSetting,
                           backgroundColorNumber:
                               customSetting?.backgroundColorNumber,
                           titleText: customSetting?.titleText,
