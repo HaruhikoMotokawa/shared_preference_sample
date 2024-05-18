@@ -114,7 +114,8 @@ class KeyValueRepository implements KeyValueRepositoryBase {
     _onValueChanged
       ..add(iconSettingKey)
       ..add(backgroundColorNumberKey)
-      ..add(titleTextKey);
+      ..add(titleTextKey)
+      ..add(customSettingKey);
   }
 
   /// 指定されたキーに関連付けられたデータをSharedPreferencesから取得します。
