@@ -128,7 +128,9 @@ class MyHomePage extends ConsumerWidget {
                   final result =
                       await showSelectIconSettingBottomSheet(context);
                   if (result != null) {
-                    await ref.read(keyValueRepositoryProvider).setIconSetting();
+                    await ref
+                        .read(keyValueRepositoryProvider)
+                        .setIconSetting(value: result);
                   }
                 },
               ),
@@ -156,13 +158,22 @@ class MyHomePage extends ConsumerWidget {
               ),
               ElevatedButton(
                 child: const Text('複数の条件を設定'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<EditCustomSettingPage>(
-                      builder: (builder) => const EditCustomSettingPage(),
-                    ),
-                  );
+                onPressed: () async {
+                  final customSetting =
+                      await ref.read(customSettingProvider.future);
+                  if (context.mounted) {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<EditCustomSettingPage>(
+                        builder: (builder) => EditCustomSettingPage(
+                          iconSetting: customSetting?.isIconEnable,
+                          backgroundColorNumber:
+                              customSetting?.backgroundColorNumber,
+                          titleText: customSetting?.titleText,
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
               ElevatedButton(

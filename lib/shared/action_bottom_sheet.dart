@@ -3,31 +3,29 @@ import 'package:flutter/material.dart';
 /// ボトムシートの原型
 ///
 /// ここでがグローバルで宣言しているが[ActionBottomSheet]のstatic methodで宣言してもいい
-/// 戻り値を[T]にして、特定の値を返すことができる関数にする
 /// null許容にしているのは、ボトムシートの外をタップしたりスワイプすると
 /// 何も選択しないでボトムシートを閉じられてしまう可能性があるから
-Future<T?> showActionBottomSheet<T>(
+Future<void> showActionBottomSheet(
   BuildContext context, {
-  required List<ActionItem<T>> actions,
-}) async {
+  required List<ActionItem> actions,
+}) {
   // Flutter標準のボトムシートの関数を呼び出す
   // 細かな設定はここで行う
   // 引数のbuilderに[ActionBottomSheet]を返す
-  await showModalBottomSheet<T>(
+  return showModalBottomSheet(
     context: context,
     useRootNavigator: true,
     showDragHandle: true,
     builder: (context) {
       // 引数のactionsはここではなくて呼び出し元で設定するので、
       // [showActionBottomSheet]の引数にする
-      return ActionBottomSheet<T>(actions: actions);
+      return ActionBottomSheet(actions: actions);
     },
   );
-  return null;
 }
 
 /// ボトムシートの土台
-class ActionBottomSheet<T> extends StatelessWidget {
+class ActionBottomSheet extends StatelessWidget {
   /// ボトムシートの土台
   const ActionBottomSheet({
     required this.actions,
@@ -35,7 +33,7 @@ class ActionBottomSheet<T> extends StatelessWidget {
   });
 
   /// アクションは別に受け取るようにする
-  final List<ActionItem<T>> actions;
+  final List<ActionItem> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,7 @@ class ActionBottomSheet<T> extends StatelessWidget {
 }
 
 /// [ActionBottomSheet]にのせる選択肢
-class ActionItem<T> extends StatelessWidget {
+class ActionItem extends StatelessWidget {
   /// [ActionBottomSheet]にのせる選択肢
   const ActionItem({
     required this.icon,
