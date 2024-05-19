@@ -1,52 +1,84 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
+import 'package:shared_preference_sample/domains/tile_type.dart';
 import 'package:shared_preference_sample/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
 
+/// ホーム画面
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key});
+  /// ホーム画面のコンストラクタ
+  const MyHomePage({
+    required this.isWatchProvider,
+    super.key,
+  });
+
+  /// 画面全体で値をwatchするテストを行うかどうかのフラグ
+  final bool isWatchProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// テスト用のwidget
+    Widget? testIconSettingWidget;
+
+    // もしisWatchProviderがtrueの場合は画面全体でiconSettingProviderをwatchし、
+    // watchした値を反映するwidgetをtestIconSettingWidgetに設定する
+    if (isWatchProvider) {
+      final iconSetting = ref.watch(iconSettingProvider);
+      testIconSettingWidget = Column(
+        children: [
+          iconSetting.when(
+            data: (data) {
+              logger.d('画面でwatchした場合のビルドです');
+              return ListTile(
+                title: Text('画面でwatchした値の${TileType.iconSetting.title}'),
+                trailing: switch (data) {
+                  true => const Icon(Icons.power),
+                  false => const Icon(Icons.power_off),
+                  null => const Text('値がnullです')
+                },
+              );
+            },
+            error: (error, stack) => _ErrorTextWidget(
+              error,
+              stack,
+              type: TileType.iconSetting,
+            ),
+            loading: () => const CircularProgressIndicator(),
+          ),
+          const Divider(),
+        ],
+      );
+    }
+
+    logger.d('画面全体のビルドです');
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // isWatchProviderがtrueだったら生成する
+              if (isWatchProvider && testIconSettingWidget != null)
+                testIconSettingWidget,
               const Flexible(
-                child: _ConsumerWidget(
-                  title: 'アイコンの設定',
-                  type: ProviderType.iconSetting,
-                ),
+                child: _ConsumerWidget(type: TileType.iconSetting),
               ),
               const Flexible(
-                child: _ConsumerWidget(
-                  title: '背景色の番号',
-                  type: ProviderType.backgroundColorNumber,
-                ),
+                child: _ConsumerWidget(type: TileType.backgroundColorNumber),
               ),
               const Flexible(
-                child: _ConsumerWidget(
-                  title: 'タイトルの文字列',
-                  type: ProviderType.titleText,
-                ),
+                child: _ConsumerWidget(type: TileType.titleText),
               ),
               const Flexible(
-                child: _ConsumerWidget(
-                  title: 'JSONで複数の設定',
-                  type: ProviderType.customSetting,
-                ),
+                child: _ConsumerWidget(type: TileType.customSetting),
               ),
               const Divider(),
               ElevatedButton(
-                child: const Text('アイコンの表示と非表示を切り替え'),
+                child: const Text('アイコンの設定を変更'),
                 onPressed: () async {
                   final result =
                       await showSelectIconSettingBottomSheet(context);
@@ -58,7 +90,7 @@ class MyHomePage extends ConsumerWidget {
                 },
               ),
               ElevatedButton(
-                child: const Text('背景色番号を設定'),
+                child: const Text('背景色の番号を変更'),
                 onPressed: () async {
                   final result = await showSelectColorBottomSheet(context);
                   if (result != null) {
@@ -69,7 +101,7 @@ class MyHomePage extends ConsumerWidget {
                 },
               ),
               ElevatedButton(
-                child: const Text('タイトルを選択'),
+                child: const Text('タイトルを変更'),
                 onPressed: () async {
                   final result = await showSelectTitleBottomSheet(context);
                   if (result != null) {
@@ -80,7 +112,7 @@ class MyHomePage extends ConsumerWidget {
                 },
               ),
               ElevatedButton(
-                child: const Text('複数の条件を設定'),
+                child: const Text('複数の条件を変更'),
                 onPressed: () async {
                   final customSetting =
                       await ref.read(customSettingProvider.future);
@@ -116,56 +148,48 @@ class MyHomePage extends ConsumerWidget {
   }
 }
 
+/// 引数のTileTypeによってwatchする内容を切り替えて、対応する内容のListTileを返却する
 class _ConsumerWidget extends ConsumerWidget {
-  const _ConsumerWidget({
-    required this.title,
-    required this.type,
-  });
+  const _ConsumerWidget({required this.type});
 
-  final ProviderType type;
-  final String title;
+  final TileType type;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stream = switch (type) {
-      ProviderType.iconSetting => ref.watch(iconSettingProvider),
-      ProviderType.backgroundColorNumber =>
+      TileType.iconSetting => ref.watch(iconSettingProvider),
+      TileType.backgroundColorNumber =>
         ref.watch(backgroundColorNumberProvider),
-      ProviderType.titleText => ref.watch(titleTextProvider),
-      ProviderType.customSetting => ref.watch(customSettingProvider),
+      TileType.titleText => ref.watch(titleTextProvider),
+      TileType.customSetting => ref.watch(customSettingProvider),
     };
 
     return stream.when(
-      data: (data) => InfoListTile<bool>(
+      data: (data) => InfoListTile(
         value: data,
-        title: title,
+        type: type,
       ),
       error: (error, stack) => _ErrorTextWidget(
         error,
         stack,
-        title: title,
+        type: type,
       ),
       loading: () => const CircularProgressIndicator(),
     );
   }
 }
 
-enum ProviderType {
-  iconSetting,
-  backgroundColorNumber,
-  titleText,
-  customSetting,
-}
 
 class _ErrorTextWidget extends StatelessWidget {
   const _ErrorTextWidget(
     this.error,
     this.stack, {
-    required this.title,
+    required this.type,
   });
 
   final Object error;
   final StackTrace stack;
-  final String title;
+  final TileType type;
   @override
   Widget build(BuildContext context) {
     logger.e(
@@ -173,6 +197,6 @@ class _ErrorTextWidget extends StatelessWidget {
       error: error,
       stackTrace: stack,
     );
-    return Text('$titleのエラーです');
+    return Text('${type.title}のエラーです');
   }
 }

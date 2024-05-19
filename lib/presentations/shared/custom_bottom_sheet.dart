@@ -5,6 +5,7 @@ import 'package:shared_preference_sample/presentations/shared/action_bottom_shee
 
 /// アイコン設定を選択するボトムシート
 Future<bool?> showSelectIconSettingBottomSheet(BuildContext context) async {
+  // 非同期処理の結果を管理するためのオブジェクト
   final completer = Completer<bool?>();
   await showActionBottomSheet(
     context,
@@ -12,15 +13,21 @@ Future<bool?> showSelectIconSettingBottomSheet(BuildContext context) async {
       ActionItem(
         icon: Icons.power,
         text: '有効',
+        // completerにtrueを渡している
         onTap: () => completer.complete(true),
+        // 以下のようにしてもtrueを返せない
+        // 非同期処理の完了を待つ必要がある
+        // onTap: () => true,
       ),
       ActionItem(
         icon: Icons.power_off,
         text: '無効',
+        // completerにfalseを渡している
         onTap: () => completer.complete(false),
       ),
     ],
   );
+  // 受け取った値を最終的にここで返す
   return completer.future;
 }
 
@@ -68,7 +75,7 @@ Future<String?> showSelectTitleBottomSheet(BuildContext context) async {
       ),
       ActionItem(
         icon: Icons.refresh,
-        text: 'デフォルトに戻す（なし）',
+        text: 'No Title',
         onTap: () => completer.complete('No Title'),
       ),
     ],

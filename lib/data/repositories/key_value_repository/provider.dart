@@ -12,19 +12,19 @@ KeyValueRepositoryBase keyValueRepository(KeyValueRepositoryRef ref) {
 
 /// アイコン設定の値を提供するStreamを生成
 /// `IconSettingRef`を通じてリポジトリにアクセスし、現在のアイコン設定を取得し、
-/// その後、アイコン設定が変更されるたびに新しい値を提供します。
+/// その後、アイコン設定が変更されるたびに新しい値を提供する
 @riverpod
 Stream<bool?> iconSetting(IconSettingRef ref) async* {
-  // キー値リポジトリのプロバイダーからリポジトリオブジェクトを取得します。
+  // キー値リポジトリのプロバイダーからリポジトリオブジェクトを取得
   final repository = ref.read(keyValueRepositoryProvider);
 
-  // 最初のアイコン設定の値を取得し、yieldを使用してStreamに出力します。
+  // 最初のアイコン設定の値を取得し、yieldを使用してStreamに出力
   yield await repository.getIconSetting();
 
-  // リポジトリの値変更通知を購読し、アイコン設定キーの変更のみにフィルターをかけます。
+  // リポジトリの値変更通知を購読し、アイコン設定キーの変更のみにフィルターをかける
   await for (final _ in repository.onValueChange
       .where((key) => key == KeyValueRepository.iconSettingKey)) {
-    // アイコン設定キーが変更されたとき、新しいアイコン設定の値を取得し、yieldでStreamに出力します。
+    // アイコン設定キーが変更されたとき、新しいアイコン設定の値を取得し、yieldでStreamに出力
     yield await repository.getIconSetting();
   }
 }

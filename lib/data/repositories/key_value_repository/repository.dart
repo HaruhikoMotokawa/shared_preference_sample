@@ -10,7 +10,7 @@ import 'package:shared_preference_sample/logger.dart';
 abstract interface class KeyValueRepositoryBase {
   /// 値の変更を監視するためのストリーム
   ///
-  /// このストリームは、保存された値が変更された時に値の変更通知を送信します。
+  /// このストリームは、保存された値が変更された時に値の変更通知を送信する
   Stream<String?> get onValueChange;
 
   /// アイコン設定の値を取得する
@@ -37,7 +37,7 @@ abstract interface class KeyValueRepositoryBase {
   /// カスタム設定の値を設定する
   Future<void> setCustomSetting(CustomSetting? value);
 
-  /// 全てのデータを初期化
+  /// 全てのデータを初期化する
   Future<void> initData();
 }
 
@@ -47,7 +47,13 @@ class KeyValueRepository implements KeyValueRepositoryBase {
   KeyValueRepository(this.ref);
 
   /// レフ
+  ///
+  /// 今後の変更で変えられるように固定のレフではなくする
   final ProviderRef<dynamic> ref;
+
+  // SharedPreferencesはkeyとvalueで紐づけて保存する
+  // ここでキーを設定するが、各設定の値を関するプロバイダーの指定できるように
+  // staticで定義する
 
   /// アイコン設定のキー
   static const iconSettingKey = 'iconSetting';

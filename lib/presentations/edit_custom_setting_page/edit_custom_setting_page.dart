@@ -4,16 +4,18 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
+import 'package:shared_preference_sample/domains/tile_type.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
+import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
 
-///
+/// CustomSettingを編集する画面
 class EditCustomSettingPage extends HookConsumerWidget {
-  ///
+  /// CustomSettingを編集する画面
   const EditCustomSettingPage({
-    super.key,
     this.iconSetting,
     this.backgroundColorNumber,
     this.titleText,
+    super.key,
   });
 
   /// アイコン設定
@@ -32,7 +34,7 @@ class EditCustomSettingPage extends HookConsumerWidget {
     final backgroundColorNumberState = useState<int?>(null);
     final titleTextState = useState<String?>(null);
 
-    // 画面が生成された時にそれぞれの設定内容をステートに保持
+    // 画面が生成された時にそれぞれの設定内容をuseStateに代入
     useEffect(
       () {
         iconSettingState.value = iconSetting;
@@ -50,31 +52,21 @@ class EditCustomSettingPage extends HookConsumerWidget {
         child: Column(
           children: [
             Flexible(
-              child: ListTile(
-                title: const Text('アイコンの設定'),
-                trailing: switch (iconSettingState.value) {
-                  true => const Icon(Icons.power),
-                  false => const Icon(Icons.power_off),
-                  _ => const Icon(Icons.clear),
-                },
+              child: InfoListTile(
+                value: iconSettingState.value,
+                type: TileType.iconSetting,
               ),
             ),
             Flexible(
-              child: ListTile(
-                title: const Text('背景色の番号'),
-                trailing: Text(backgroundColorNumberState.value.toString()),
-                tileColor: switch (backgroundColorNumberState.value) {
-                  0 => Colors.transparent,
-                  1 => Colors.red,
-                  2 => Colors.blue,
-                  _ => Colors.grey,
-                },
+              child: InfoListTile(
+                value: backgroundColorNumberState.value,
+                type: TileType.backgroundColorNumber,
               ),
             ),
             Flexible(
-              child: ListTile(
-                title: const Text('タイトルの文字'),
-                trailing: Text(titleTextState.value ?? '値なし'),
+              child: InfoListTile(
+                value: titleTextState.value,
+                type: TileType.iconSetting,
               ),
             ),
             const Divider(),
@@ -119,10 +111,6 @@ class EditCustomSettingPage extends HookConsumerWidget {
                       backgroundColorNumber: backgroundColorNumberState.value,
                       titleText: titleTextState.value,
                     );
-                    if (setting == updateSetting) {
-                      Navigator.pop(context);
-                      return;
-                    }
                     await ref
                         .read(keyValueRepositoryProvider)
                         .setCustomSetting(updateSetting);

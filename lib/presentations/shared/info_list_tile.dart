@@ -1,24 +1,35 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
+import 'package:shared_preference_sample/domains/tile_type.dart';
 import 'package:shared_preference_sample/logger.dart';
 
-class InfoListTile<T> extends StatelessWidget {
+/// 現在の設定内容を表示するListTile
+class InfoListTile extends StatelessWidget {
+  /// 現在の設定内容を表示するListTile
   const InfoListTile({
     required this.value,
-    required this.title,
+    required this.type,
     super.key,
   });
 
+  /// 値のObject
+  ///
+  /// `AsyncValue`の戻り値`data`は`Object`型でそこに対応するため
+  /// ここに直接intやboolを渡しても対応できる
   final Object? value;
-  final String title;
+
+  /// Tileのタイプ
+  final TileType type;
   @override
   Widget build(BuildContext context) {
-    logger.d('$titleのタイルをビルド');
+    logger.d('${type.title}のタイルをビルド');
     return switch (value) {
+      null => ListTile(
+          title: Text(type.title),
+          trailing: const Text('値がnullです'),
+        ),
       final bool boolValue => ListTile(
-          title: Text(title),
+          title: Text(type.title),
           trailing: switch (boolValue) {
             true => const Icon(Icons.power),
             false => const Icon(Icons.power_off),
@@ -41,11 +52,11 @@ class InfoListTile<T> extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
-              Text(title),
+              Text(type.title),
               const Spacer(),
               Expanded(
                 child: Text(
-                  customSettingValue.toString(),
+                  customSettingValue.toJson().toString(),
                   softWrap: true,
                 ),
               ),
@@ -53,8 +64,8 @@ class InfoListTile<T> extends StatelessWidget {
           ),
         ),
       _ => ListTile(
-          title: Text(title),
-          trailing: const Text('値がnullまたは対応しない型です'),
+          title: Text(type.title),
+          trailing: const Text('対応しない型です'),
         ),
     };
   }
