@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
-import 'package:shared_preference_sample/shared/custom_bottom_sheet.dart';
+import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 
 ///
 class EditCustomSettingPage extends HookConsumerWidget {
@@ -16,21 +16,23 @@ class EditCustomSettingPage extends HookConsumerWidget {
     this.titleText,
   });
 
-  ///
+  /// アイコン設定
   final bool? iconSetting;
 
-  ///
+  /// 背景色番号
   final int? backgroundColorNumber;
 
-  ///
+  /// タイトルテキスト
   final String? titleText;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 一時的に変更内容を保持するためのステート達
     final iconSettingState = useState<bool?>(null);
     final backgroundColorNumberState = useState<int?>(null);
     final titleTextState = useState<String?>(null);
 
+    // 画面が生成された時にそれぞれの設定内容をステートに保持
     useEffect(
       () {
         iconSettingState.value = iconSetting;

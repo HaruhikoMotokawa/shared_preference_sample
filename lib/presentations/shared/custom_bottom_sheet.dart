@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preference_sample/shared/action_bottom_sheet.dart';
+import 'package:shared_preference_sample/presentations/shared/action_bottom_sheet.dart';
 
 /// アイコン設定を選択するボトムシート
 Future<bool?> showSelectIconSettingBottomSheet(BuildContext context) async {

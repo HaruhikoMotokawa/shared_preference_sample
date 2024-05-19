@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
-import 'package:shared_preference_sample/shared/custom_bottom_sheet.dart';
+import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
@@ -195,8 +196,12 @@ class MyHomePage extends ConsumerWidget {
                   }
                 },
               ),
+              const Gap(50),
               ElevatedButton(
-                child: const Text('shared_preferenceを初期化'),
+                child: const Text(
+                  'shared_preferenceを初期化',
+                  style: TextStyle(color: Colors.red),
+                ),
                 onPressed: () =>
                     ref.read(keyValueRepositoryProvider).initData(),
               ),
