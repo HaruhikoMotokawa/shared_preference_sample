@@ -7,6 +7,7 @@ import 'package:shared_preference_sample/data/repositories/key_value_repository/
 import 'package:shared_preference_sample/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
+import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
@@ -19,126 +20,28 @@ class MyHomePage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final iconSetting = ref.watch(iconSettingProvider);
-                    logger.d('アイコンのタイルを再ビルド');
-                    return iconSetting.when(
-                      data: (data) {
-                        return ListTile(
-                          title: const Text('アイコンの設定'),
-                          trailing: switch (data) {
-                            true => const Icon(Icons.power),
-                            false => const Icon(Icons.power_off),
-                            _ => const Icon(Icons.clear),
-                          },
-                        );
-                      },
-                      error: (err, stack) {
-                        logger.e(
-                          'エラー',
-                          error: err,
-                          stackTrace: stack,
-                        );
-                        return const Text('エラーです');
-                      },
-                      loading: () => const CircularProgressIndicator(),
-                    );
-                  },
+              const Flexible(
+                child: _ConsumerWidget(
+                  title: 'アイコンの設定',
+                  type: ProviderType.iconSetting,
                 ),
               ),
-              Flexible(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final backGroundColorNumber =
-                        ref.watch(backgroundColorNumberProvider);
-                    logger.d('背景色のタイルを再ビルド');
-                    return backGroundColorNumber.when(
-                      data: (data) {
-                        return ListTile(
-                          title: const Text('背景色の番号'),
-                          trailing: Text(data.toString()),
-                          tileColor: switch (data) {
-                            0 => Colors.transparent,
-                            1 => Colors.red,
-                            2 => Colors.blue,
-                            _ => Colors.grey,
-                          },
-                        );
-                      },
-                      error: (err, stack) {
-                        logger.e(
-                          'エラー',
-                          error: err,
-                          stackTrace: stack,
-                        );
-                        return const Text('エラーです');
-                      },
-                      loading: () => const CircularProgressIndicator(),
-                    );
-                  },
+              const Flexible(
+                child: _ConsumerWidget(
+                  title: '背景色の番号',
+                  type: ProviderType.backgroundColorNumber,
                 ),
               ),
-              Flexible(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final titleText = ref.watch(titleTextProvider);
-                    logger.d('タイトルのタイルを再ビルド');
-                    return titleText.when(
-                      data: (data) {
-                        return ListTile(
-                          title: const Text('タイトルの文字'),
-                          trailing: Text(data ?? '値なし'),
-                        );
-                      },
-                      error: (err, stack) {
-                        logger.e(
-                          'エラー',
-                          error: err,
-                          stackTrace: stack,
-                        );
-                        return const Text('エラーです');
-                      },
-                      loading: () => const CircularProgressIndicator(),
-                    );
-                  },
+              const Flexible(
+                child: _ConsumerWidget(
+                  title: 'タイトルの文字列',
+                  type: ProviderType.titleText,
                 ),
               ),
-              Flexible(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final customSetting = ref.watch(customSettingProvider);
-                    logger.d('タイトルのタイルを再ビルド');
-                    return customSetting.when(
-                      data: (data) {
-                        return Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              const Text('JSONで複数の設定'),
-                              const Spacer(),
-                              Expanded(
-                                child: Text(
-                                  data.toString(),
-                                  softWrap: true,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      error: (err, stack) {
-                        logger.e(
-                          'エラー',
-                          error: err,
-                          stackTrace: stack,
-                        );
-                        return const Text('エラーです');
-                      },
-                      loading: () => const CircularProgressIndicator(),
-                    );
-                  },
+              const Flexible(
+                child: _ConsumerWidget(
+                  title: 'JSONで複数の設定',
+                  type: ProviderType.customSetting,
                 ),
               ),
               const Divider(),
@@ -210,5 +113,66 @@ class MyHomePage extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class _ConsumerWidget extends ConsumerWidget {
+  const _ConsumerWidget({
+    required this.title,
+    required this.type,
+  });
+
+  final ProviderType type;
+  final String title;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stream = switch (type) {
+      ProviderType.iconSetting => ref.watch(iconSettingProvider),
+      ProviderType.backgroundColorNumber =>
+        ref.watch(backgroundColorNumberProvider),
+      ProviderType.titleText => ref.watch(titleTextProvider),
+      ProviderType.customSetting => ref.watch(customSettingProvider),
+    };
+
+    return stream.when(
+      data: (data) => InfoListTile<bool>(
+        value: data,
+        title: title,
+      ),
+      error: (error, stack) => _ErrorTextWidget(
+        error,
+        stack,
+        title: title,
+      ),
+      loading: () => const CircularProgressIndicator(),
+    );
+  }
+}
+
+enum ProviderType {
+  iconSetting,
+  backgroundColorNumber,
+  titleText,
+  customSetting,
+}
+
+class _ErrorTextWidget extends StatelessWidget {
+  const _ErrorTextWidget(
+    this.error,
+    this.stack, {
+    required this.title,
+  });
+
+  final Object error;
+  final StackTrace stack;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    logger.e(
+      'エラー',
+      error: error,
+      stackTrace: stack,
+    );
+    return Text('$titleのエラーです');
   }
 }
