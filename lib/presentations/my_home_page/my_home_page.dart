@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/domains/tile_type.dart';
 import 'package:shared_preference_sample/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
+import 'package:shared_preference_sample/presentations/my_home_page/my_home_page_view_model.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
 
 /// ホーム画面
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends HookConsumerWidget {
   /// ホーム画面のコンストラクタ
-  const MyHomePage({
-    required this.isWatchProvider,
-    super.key,
-  });
-
-  /// 画面全体で値をwatchするテストを行うかどうかのフラグ
-  final bool isWatchProvider;
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// 画面全体で値をwatchするテストを行うかどうかのフラグ
+    final isWatchProviderFromPage = useState(false);
+
     /// テスト用のwidget
     Widget? testIconSettingWidget;
 
     // もしisWatchProviderがtrueの場合は画面全体でiconSettingProviderをwatchし、
     // watchした値を反映するwidgetをtestIconSettingWidgetに設定する
-    if (isWatchProvider) {
+    // isWatchProviderを変更するにはmain.dartで引数に`true`を渡す
+    if (isWatchProviderFromPage.value) {
       final iconSetting = ref.watch(iconSettingProvider);
       testIconSettingWidget = Column(
         children: [
@@ -42,11 +42,14 @@ class MyHomePage extends ConsumerWidget {
                 },
               );
             },
-            error: (error, stack) => _ErrorTextWidget(
-              error,
-              stack,
-              type: TileType.iconSetting,
-            ),
+            error: (error, stack) {
+              logger.e(
+                'エラー',
+                error: error,
+                stackTrace: stack,
+              );
+              return const Text('エラーです');
+            },
             loading: () => const CircularProgressIndicator(),
           ),
           const Divider(),
@@ -61,20 +64,54 @@ class MyHomePage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // isWatchProviderがtrueだったら生成する
-              if (isWatchProvider && testIconSettingWidget != null)
+              // isWatchProviderFromPageがtrueだったら生成する
+              if (isWatchProviderFromPage.value &&
+                  testIconSettingWidget != null)
                 testIconSettingWidget,
-              const Flexible(
-                child: _ConsumerWidget(type: TileType.iconSetting),
+              Flexible(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final iconSetting = ref.watch(iconSettingProvider);
+                    return InfoListTile(
+                      value: iconSetting.value,
+                      type: TileType.iconSetting,
+                    );
+                  },
+                ),
               ),
-              const Flexible(
-                child: _ConsumerWidget(type: TileType.backgroundColorNumber),
+              Flexible(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final backgroundColorNumber =
+                        ref.watch(backgroundColorNumberProvider);
+                    return InfoListTile(
+                      value: backgroundColorNumber.value,
+                      type: TileType.backgroundColorNumber,
+                    );
+                  },
+                ),
               ),
-              const Flexible(
-                child: _ConsumerWidget(type: TileType.titleText),
+              Flexible(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final titleText = ref.watch(titleTextProvider);
+                    return InfoListTile(
+                      value: titleText.value,
+                      type: TileType.titleText,
+                    );
+                  },
+                ),
               ),
-              const Flexible(
-                child: _ConsumerWidget(type: TileType.customSetting),
+              Flexible(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final customSetting = ref.watch(customSettingProvider);
+                    return InfoListTile(
+                      value: customSetting.value,
+                      type: TileType.customSetting,
+                    );
+                  },
+                ),
               ),
               const Divider(),
               ElevatedButton(
@@ -84,8 +121,8 @@ class MyHomePage extends ConsumerWidget {
                       await showSelectIconSettingBottomSheet(context);
                   if (result != null) {
                     await ref
-                        .read(keyValueRepositoryProvider)
-                        .setIconSetting(value: result);
+                        .read(myHomePageViewModelProvider.notifier)
+                        .saveIconSetting(value: result);
                   }
                 },
               ),
@@ -95,8 +132,8 @@ class MyHomePage extends ConsumerWidget {
                   final result = await showSelectColorBottomSheet(context);
                   if (result != null) {
                     await ref
-                        .read(keyValueRepositoryProvider)
-                        .setBackgroundColorNumber(result);
+                        .read(myHomePageViewModelProvider.notifier)
+                        .saveBackgroundColorNumber(result);
                   }
                 },
               ),
@@ -106,8 +143,8 @@ class MyHomePage extends ConsumerWidget {
                   final result = await showSelectTitleBottomSheet(context);
                   if (result != null) {
                     await ref
-                        .read(keyValueRepositoryProvider)
-                        .setTitleText(result);
+                        .read(myHomePageViewModelProvider.notifier)
+                        .saveTitleText(result);
                   }
                 },
               ),
@@ -131,72 +168,37 @@ class MyHomePage extends ConsumerWidget {
                   }
                 },
               ),
-              const Gap(50),
+              const Gap(30),
               ElevatedButton(
                 child: const Text(
                   'shared_preferenceを初期化',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: () =>
-                    ref.read(keyValueRepositoryProvider).initData(),
+                onPressed: () => ref
+                    .read(myHomePageViewModelProvider.notifier)
+                    .initAllData(),
+              ),
+              const Gap(10),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    isWatchProviderFromPage.value ? Colors.yellow : Colors.grey,
+                  ),
+                ),
+                onPressed: () {
+                  final currentIsWatch = isWatchProviderFromPage.value;
+                  final newValue = !currentIsWatch;
+                  isWatchProviderFromPage.value = newValue;
+                },
+                child: Text(
+                  '画面全体でのWatchを'
+                  '${isWatchProviderFromPage.value ? '停止' : '開始'}',
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-/// 引数のTileTypeによってwatchする内容を切り替えて、対応する内容のListTileを返却する
-class _ConsumerWidget extends ConsumerWidget {
-  const _ConsumerWidget({required this.type});
-
-  final TileType type;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final stream = switch (type) {
-      TileType.iconSetting => ref.watch(iconSettingProvider),
-      TileType.backgroundColorNumber =>
-        ref.watch(backgroundColorNumberProvider),
-      TileType.titleText => ref.watch(titleTextProvider),
-      TileType.customSetting => ref.watch(customSettingProvider),
-    };
-
-    return stream.when(
-      data: (data) => InfoListTile(
-        value: data,
-        type: type,
-      ),
-      error: (error, stack) => _ErrorTextWidget(
-        error,
-        stack,
-        type: type,
-      ),
-      loading: () => const CircularProgressIndicator(),
-    );
-  }
-}
-
-
-class _ErrorTextWidget extends StatelessWidget {
-  const _ErrorTextWidget(
-    this.error,
-    this.stack, {
-    required this.type,
-  });
-
-  final Object error;
-  final StackTrace stack;
-  final TileType type;
-  @override
-  Widget build(BuildContext context) {
-    logger.e(
-      'エラー',
-      error: error,
-      stackTrace: stack,
-    );
-    return Text('${type.title}のエラーです');
   }
 }

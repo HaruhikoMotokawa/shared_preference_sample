@@ -13,9 +13,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      // isWatchProviderをtrueにすると画面全体で値をwatchした場合が試せます。
-      home: MyHomePage(isWatchProvider: false),
-    );
+    return const MaterialApp(home: MyHomePage());
   }
 }
