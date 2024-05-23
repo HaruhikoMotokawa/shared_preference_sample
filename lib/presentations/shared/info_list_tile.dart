@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
 import 'package:shared_preference_sample/domains/tile_type.dart';
-import 'package:shared_preference_sample/logger.dart';
+import 'package:shared_preference_sample/core/logger.dart';
 
 /// 現在の設定内容を表示するListTile
 class InfoListTile extends StatelessWidget {

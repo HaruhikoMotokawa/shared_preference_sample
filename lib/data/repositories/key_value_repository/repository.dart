@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preference_sample/data/local_sources/shared_preference.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
-import 'package:shared_preference_sample/logger.dart';
+import 'package:shared_preference_sample/core/logger.dart';
 
 /// キーバリューペアを管理するための抽象インターフェース
 abstract interface class KeyValueRepositoryBase {

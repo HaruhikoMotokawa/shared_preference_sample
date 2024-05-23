@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preference_sample/logger.dart';
+import 'package:shared_preference_sample/core/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'shared_preference.g.dart';

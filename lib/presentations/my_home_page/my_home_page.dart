@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
 import 'package:shared_preference_sample/domains/tile_type.dart';
-import 'package:shared_preference_sample/logger.dart';
+import 'package:shared_preference_sample/core/logger.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page.dart';
 import 'package:shared_preference_sample/presentations/my_home_page/my_home_page_view_model.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
