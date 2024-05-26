@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preference_sample/core/logger.dart';
+import 'package:shared_preference_sample/applications/log/logger.dart';
 import 'package:shared_preference_sample/data/local_sources/shared_preference.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
 

@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
-import 'package:shared_preference_sample/domains/tile_type.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page_view_model.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
