@@ -10,6 +10,10 @@ KeyValueRepositoryBase keyValueRepository(KeyValueRepositoryRef ref) {
   return KeyValueRepository(ref);
 }
 
+// =============================================================================
+// 以下は依存性の注入には関係なし
+// keyValueRepositoryProviderを使って状態を作成しているので同一ファイルに定義しているだけ
+
 /// アイコン設定の値を提供するStreamを生成
 /// `IconSettingRef`を通じてリポジトリにアクセスし、現在のアイコン設定を取得し、
 /// その後、アイコン設定が変更されるたびに新しい値を提供する
