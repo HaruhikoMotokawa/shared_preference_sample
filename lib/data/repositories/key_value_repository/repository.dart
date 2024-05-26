@@ -52,7 +52,7 @@ class KeyValueRepository implements KeyValueRepositoryBase {
   final ProviderRef<dynamic> ref;
 
   // SharedPreferencesはkeyとvalueで紐づけて保存する
-  // ここでキーを設定するが、各設定の値を関するプロバイダーの指定できるように
+  // ここでキーを設定するが、各設定の値を関係するプロバイダーに指定できるように
   // staticで定義する
 
   /// アイコン設定のキー
