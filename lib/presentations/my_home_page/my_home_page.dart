@@ -72,7 +72,7 @@ class MyHomePage extends HookConsumerWidget {
                   builder: (context, ref, child) {
                     final iconSetting = ref.watch(iconSettingProvider);
                     return InfoListTile(
-                      value: iconSetting.value,
+                      value: iconSetting.valueOrNull,
                       type: TileType.iconSetting,
                     );
                   },
@@ -84,7 +84,7 @@ class MyHomePage extends HookConsumerWidget {
                     final backgroundColorNumber =
                         ref.watch(backgroundColorNumberProvider);
                     return InfoListTile(
-                      value: backgroundColorNumber.value,
+                      value: backgroundColorNumber.valueOrNull,
                       type: TileType.backgroundColorNumber,
                     );
                   },
@@ -95,7 +95,7 @@ class MyHomePage extends HookConsumerWidget {
                   builder: (context, ref, child) {
                     final titleText = ref.watch(titleTextProvider);
                     return InfoListTile(
-                      value: titleText.value,
+                      value: titleText.valueOrNull,
                       type: TileType.titleText,
                     );
                   },
@@ -106,7 +106,7 @@ class MyHomePage extends HookConsumerWidget {
                   builder: (context, ref, child) {
                     final customSetting = ref.watch(customSettingProvider);
                     return InfoListTile(
-                      value: customSetting.value,
+                      value: customSetting.valueOrNull,
                       type: TileType.customSetting,
                     );
                   },
@@ -180,7 +180,7 @@ class MyHomePage extends HookConsumerWidget {
               const Gap(10),
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     isWatchProviderFromPage.value ? Colors.yellow : Colors.grey,
                   ),
                 ),

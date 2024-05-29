@@ -18,6 +18,7 @@ class CustomSetting with _$CustomSetting {
     String? titleText,
   }) = _CustomSetting;
 
+  /// jsonへ変換
   factory CustomSetting.fromJson(Map<String, dynamic> json) =>
       _$CustomSettingFromJson(json);
 }
