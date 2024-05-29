@@ -10,17 +10,12 @@
 .svn/
 migrate_working_dir/
 
-
 *.iml
 *.ipr
 *.iws
 .idea/
 
-
-
-
 #.vscode/
-
 
 **/doc/api/
 **/ios/Flutter/.last_build_id
@@ -31,13 +26,13 @@ migrate_working_dir/
 .pub/
 /build/
 
-
 app.*.symbols
 
-
 app.*.map.json
-
 
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# FVM Version Cache
+.fvm/
