@@ -13,8 +13,7 @@ class InfoListTile extends StatelessWidget {
 
   /// 値のObject
   ///
-  /// `AsyncValue`の戻り値`data`は`Object`型でそこに対応するため
-  /// ここに直接intやboolを渡しても対応できる
+  /// ここでは多様な型に対応できるようにObjectで定義している
   final Object? value;
 
   /// Tileのタイプ
