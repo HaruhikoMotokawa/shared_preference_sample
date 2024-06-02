@@ -94,22 +94,14 @@ class KeyValueRepository implements KeyValueRepositoryBase {
 
   @override
   Future<CustomSetting?> getCustomSetting() async {
-    final mapValue = await _get<Map<dynamic, dynamic>>(customSettingKey);
-    if (mapValue == null) {
-      return null;
-    }
-    final customSetting = CustomSetting.fromJson(mapValue.cast());
-    return customSetting;
+    final json = await _get<Map<String, dynamic>>(customSettingKey);
+    if (json == null) return null;
+    return CustomSetting.fromJson(json);
   }
 
   @override
-  Future<void> setCustomSetting(CustomSetting? value) {
-    final json = switch (value) {
-      final v? => jsonEncode(v.toJson()),
-      _ => null,
-    };
-    return _set(customSettingKey, json);
-  }
+  Future<void> setCustomSetting(CustomSetting? value) =>
+      _set(customSettingKey, value);
 
   @override
   Future<void> initData() async {
@@ -218,7 +210,8 @@ class KeyValueRepository implements KeyValueRepositoryBase {
       case _:
         await pref.setString(key, jsonEncode(value));
     }
-
+    
+    // keyという文字列をストリームに流す
     _onValueChanged.add(key);
   }
 }
