@@ -22,9 +22,8 @@ class MyHomePage extends HookConsumerWidget {
     /// テスト用のwidget
     Widget? testIconSettingWidget;
 
-    // もしisWatchProviderがtrueの場合は画面全体でiconSettingProviderをwatchし、
+    // もしisWatchProviderFromPageがtrueの場合は画面全体でiconSettingProviderをwatchし、
     // watchした値を反映するwidgetをtestIconSettingWidgetに設定する
-    // isWatchProviderを変更するにはmain.dartで引数に`true`を渡す
     if (isWatchProviderFromPage.value) {
       final iconSetting = ref.watch(iconSettingProvider);
       testIconSettingWidget = Column(
