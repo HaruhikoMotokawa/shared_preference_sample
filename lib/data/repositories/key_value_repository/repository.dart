@@ -94,9 +94,9 @@ class KeyValueRepository implements KeyValueRepositoryBase {
 
   @override
   Future<CustomSetting?> getCustomSetting() async {
-    final json = await _get<Map<String, dynamic>>(customSettingKey);
+    final json = await _get<Map<dynamic, dynamic>>(customSettingKey);
     if (json == null) return null;
-    return CustomSetting.fromJson(json);
+    return CustomSetting.fromJson(json.cast());
   }
 
   @override
@@ -210,7 +210,7 @@ class KeyValueRepository implements KeyValueRepositoryBase {
       case _:
         await pref.setString(key, jsonEncode(value));
     }
-    
+
     // keyという文字列をストリームに流す
     _onValueChanged.add(key);
   }
