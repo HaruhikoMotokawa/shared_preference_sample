@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preference_sample/domains/custom_setting.dart';
 import 'package:shared_preference_sample/presentations/edit_custom_setting_page/edit_custom_setting_page_view_model.dart';
 import 'package:shared_preference_sample/presentations/shared/custom_bottom_sheet.dart';
 import 'package:shared_preference_sample/presentations/shared/info_list_tile.dart';
 
 /// CustomSettingを編集する画面
-class EditCustomSettingPage extends HookConsumerWidget {
+class EditCustomSettingPage extends HookWidget {
   /// CustomSettingを編集する画面
   const EditCustomSettingPage({
     this.iconSetting,
@@ -27,7 +26,7 @@ class EditCustomSettingPage extends HookConsumerWidget {
   final String? titleText;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     // 一時的に変更内容を保持するためのステート達
     final iconSettingState = useState<bool?>(null);
     final backgroundColorNumberState = useState<int?>(null);
@@ -99,25 +98,28 @@ class EditCustomSettingPage extends HookConsumerWidget {
             ),
             const Gap(40),
             Flexible(
-              child: SizedBox(
-                width: 300,
-                child: ElevatedButton(
-                  child: const Text('保 存'),
-                  onPressed: () async {
-                    const setting = CustomSetting();
-                    final updateSetting = setting.copyWith(
-                      iconSetting: iconSettingState.value,
-                      backgroundColorNumber: backgroundColorNumberState.value,
-                      titleText: titleTextState.value,
-                    );
-                    await ref
-                        .read(editCustomSettingPageProvider.notifier)
-                        .saveCustomSetting(updateSetting);
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  return SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      child: const Text('保 存'),
+                      onPressed: () async {
+                        await ref
+                            .read(editCustomSettingPageProvider.notifier)
+                            .saveCustomSetting(
+                              iconSetting: iconSettingState.value,
+                              backgroundColorNumber:
+                                  backgroundColorNumberState.value,
+                              titleText: titleTextState.value,
+                            );
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  );
+                },
               ),
             ),
           ],

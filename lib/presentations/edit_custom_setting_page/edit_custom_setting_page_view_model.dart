@@ -11,6 +11,17 @@ class EditCustomSettingPage extends _$EditCustomSettingPage {
   Future<void> build() async {}
 
   /// カスタム設定を保存する
-  Future<void> saveCustomSetting(CustomSetting value) =>
-      ref.read(keyValueRepositoryProvider).setCustomSetting(value);
+  Future<void> saveCustomSetting({
+    required bool? iconSetting,
+    required int? backgroundColorNumber,
+    required String? titleText,
+  }) async {
+    const setting = CustomSetting();
+    final updateSetting = setting.copyWith(
+      iconSetting: iconSetting,
+      backgroundColorNumber: backgroundColorNumber,
+      titleText: titleText,
+    );
+    await ref.read(keyValueRepositoryProvider).setCustomSetting(updateSetting);
+  }
 }
