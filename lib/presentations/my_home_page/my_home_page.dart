@@ -149,6 +149,8 @@ class MyHomePage extends HookConsumerWidget {
               ElevatedButton(
                 child: const Text('複数の条件を変更'),
                 onPressed: () async {
+                  // customSettingProviderはAsyncValueなので現時点での値を読み取る場合は
+                  // .futureで待つ必要がある
                   final customSetting =
                       await ref.read(customSettingProvider.future);
                   if (context.mounted) {
