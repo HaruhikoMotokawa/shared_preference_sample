@@ -24,7 +24,7 @@ dependencies:
   # isar: ^2.1.4
   json_annotation: ^4.9.0
   logger: ^2.2.0
-  # mockito: ^5.4.4
+  mockito: ^5.4.4
   # path_provider: ^2.0.15
   riverpod_annotation:
   shared_preferences: ^2.2.3
