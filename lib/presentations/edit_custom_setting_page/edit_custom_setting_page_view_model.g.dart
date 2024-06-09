@@ -7,9 +7,11 @@ part of 'edit_custom_setting_page_view_model.dart';
 // **************************************************************************
 
 String _$editCustomSettingPageHash() =>
-    r'b7f30cfd77b20dd69d78c64b48a0aca1e4d46865';
+    r'f878fa838cbbf4f3cfc57e272319913f5d8e3e54';
 
-/// See also [EditCustomSettingPage].
+/// EditCustomSettingPageの処理を司るクラス
+///
+/// Copied from [EditCustomSettingPage].
 @ProviderFor(EditCustomSettingPage)
 final editCustomSettingPageProvider =
     AutoDisposeAsyncNotifierProvider<EditCustomSettingPage, void>.internal(
