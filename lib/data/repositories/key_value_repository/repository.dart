@@ -11,7 +11,7 @@ abstract interface class KeyValueRepositoryBase {
   /// 値の変更を監視するためのストリーム
   ///
   /// このストリームは、保存された値が変更された時に値の変更通知を送信する
-  Stream<String?> get onValueChange;
+  Stream<String> get onValueChange;
 
   /// アイコン設定の値を取得する
   Future<bool?> getIconSetting();
