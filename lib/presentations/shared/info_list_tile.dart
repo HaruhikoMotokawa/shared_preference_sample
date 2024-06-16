@@ -18,6 +18,7 @@ class InfoListTile extends StatelessWidget {
 
   /// Tileのタイプ
   final TileType type;
+
   @override
   Widget build(BuildContext context) {
     logger.d('${type.title}のタイルをビルド');

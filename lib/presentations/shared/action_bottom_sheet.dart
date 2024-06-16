@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 Future<void> showActionBottomSheet(
   BuildContext context, {
   required List<ActionItem> actions,
+  Key? key,
 }) {
   // Flutter標準のボトムシートの関数を呼び出す
   // 細かな設定はここで行う
@@ -19,7 +20,10 @@ Future<void> showActionBottomSheet(
     builder: (context) {
       // 引数のactionsはここではなくて呼び出し元で設定するので、
       // [showActionBottomSheet]の引数にする
-      return ActionBottomSheet(actions: actions);
+      return ActionBottomSheet(
+        actions: actions,
+        key: key,
+      );
     },
   );
 }
@@ -38,6 +42,7 @@ class ActionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: key,
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: actions,
@@ -54,6 +59,7 @@ class ActionItem extends StatelessWidget {
     required this.text,
     this.onTap,
     super.key,
+    this.valueKey,
   });
 
   /// アイコンデータ
@@ -65,11 +71,15 @@ class ActionItem extends StatelessWidget {
   /// タップ処理を後で書きたい時のためにあえてnull許容にする
   final VoidCallback? onTap;
 
+  /// keyではなく重複を避けるためにValueKeyを渡す
+  final ValueKey<String>? valueKey;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
+        key: valueKey,
         leading: Icon(
           icon,
           size: 32,

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -14,8 +16,36 @@ class MyHomePage extends HookConsumerWidget {
   /// ホーム画面のコンストラクタ
   const MyHomePage({super.key});
 
+  static const _prefs = 'MyHomePage.';
+
+  static const iconSettingListTileFromPageWatchingKey =
+      ValueKey('${_prefs}iconSettingListTileFromPageWatching');
+
+  static const iconSettingListTileKey =
+      ValueKey('${_prefs}iconSettingListTile');
+  static const backgroundColorNumberListTileKey =
+      ValueKey('${_prefs}backgroundColorNumberListTile');
+  static const titleTextListTileKey = ValueKey('${_prefs}titleTextListTile');
+  static const customSettingListTileKey =
+      ValueKey('${_prefs}customSettingListTile');
+  static const changeIconSettingButtonKey =
+      ValueKey('${_prefs}changeIconSettingButton');
+  static const iconSettingTrueKey = ValueKey('${_prefs}iconSettingTrue');
+  static const iconSettingFalseKey = ValueKey('${_prefs}iconSettingFalse');
+  static const changeBackgroundColorButtonKey =
+      ValueKey('${_prefs}changeBackgroundColorButton');
+  static const changeTitleButtonKey = ValueKey('${_prefs}changeTitleButton');
+  static const changeMultipleSettingsButtonKey =
+      ValueKey('${_prefs}changeMultipleSettingsButton');
+  static const initializeSharedPreferencesButtonKey =
+      ValueKey('${_prefs}initializeSharedPreferencesButton');
+  static const toggleWatchProviderButtonKey =
+      ValueKey('${_prefs}toggleWatchProviderButton');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.watch(myHomePageViewModelProvider.notifier);
+
     /// 画面全体で値をwatchするテストを行うかどうかのフラグ
     final isWatchProviderFromPage = useState(false);
 
@@ -27,6 +57,7 @@ class MyHomePage extends HookConsumerWidget {
     if (isWatchProviderFromPage.value) {
       final iconSetting = ref.watch(iconSettingProvider);
       testIconSettingWidget = Column(
+        key: iconSettingListTileFromPageWatchingKey,
         children: [
           iconSetting.when(
             data: (data) {
@@ -71,6 +102,7 @@ class MyHomePage extends HookConsumerWidget {
                   builder: (context, ref, child) {
                     final iconSetting = ref.watch(iconSettingProvider);
                     return InfoListTile(
+                      key: iconSettingListTileKey,
                       value: iconSetting.valueOrNull,
                       type: TileType.iconSetting,
                     );
@@ -79,6 +111,7 @@ class MyHomePage extends HookConsumerWidget {
               ),
               Flexible(
                 child: Consumer(
+                  key: backgroundColorNumberListTileKey,
                   builder: (context, ref, child) {
                     final backgroundColorNumber =
                         ref.watch(backgroundColorNumberProvider);
@@ -91,6 +124,7 @@ class MyHomePage extends HookConsumerWidget {
               ),
               Flexible(
                 child: Consumer(
+                  key: titleTextListTileKey,
                   builder: (context, ref, child) {
                     final titleText = ref.watch(titleTextProvider);
                     return InfoListTile(
@@ -102,6 +136,7 @@ class MyHomePage extends HookConsumerWidget {
               ),
               Flexible(
                 child: Consumer(
+                  key: customSettingListTileKey,
                   builder: (context, ref, child) {
                     final customSetting = ref.watch(customSettingProvider);
                     return InfoListTile(
@@ -113,40 +148,41 @@ class MyHomePage extends HookConsumerWidget {
               ),
               const Divider(),
               ElevatedButton(
+                key: changeIconSettingButtonKey,
                 child: const Text('アイコンの設定を変更'),
                 onPressed: () async {
-                  final result =
-                      await showSelectIconSettingBottomSheet(context);
+                  final result = await showSelectIconSettingBottomSheet(
+                    context,
+                    trueKey: iconSettingTrueKey,
+                    falseKey: iconSettingFalseKey,
+                  );
                   if (result != null) {
-                    await ref
-                        .read(myHomePageViewModelProvider.notifier)
-                        .saveIconSetting(value: result);
+                    await viewModel.saveIconSetting(value: result);
                   }
                 },
               ),
               ElevatedButton(
+                key: changeBackgroundColorButtonKey,
                 child: const Text('背景色の番号を変更'),
                 onPressed: () async {
                   final result = await showSelectColorBottomSheet(context);
                   if (result != null) {
-                    await ref
-                        .read(myHomePageViewModelProvider.notifier)
-                        .saveBackgroundColorNumber(result);
+                    await viewModel.saveBackgroundColorNumber(result);
                   }
                 },
               ),
               ElevatedButton(
+                key: changeTitleButtonKey,
                 child: const Text('タイトルを変更'),
                 onPressed: () async {
                   final result = await showSelectTitleBottomSheet(context);
                   if (result != null) {
-                    await ref
-                        .read(myHomePageViewModelProvider.notifier)
-                        .saveTitleText(result);
+                    await viewModel.saveTitleText(result);
                   }
                 },
               ),
               ElevatedButton(
+                key: changeMultipleSettingsButtonKey,
                 child: const Text('複数の条件を変更'),
                 onPressed: () async {
                   // customSettingProviderはAsyncValueなので現時点での値を読み取る場合は
@@ -170,16 +206,16 @@ class MyHomePage extends HookConsumerWidget {
               ),
               const Gap(30),
               ElevatedButton(
+                key: initializeSharedPreferencesButtonKey,
+                onPressed: viewModel.initAllData,
                 child: const Text(
                   'shared_preferenceを初期化',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: () => ref
-                    .read(myHomePageViewModelProvider.notifier)
-                    .initAllData(),
               ),
               const Gap(10),
               ElevatedButton(
+                key: toggleWatchProviderButtonKey,
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(
                     isWatchProviderFromPage.value ? Colors.yellow : Colors.grey,

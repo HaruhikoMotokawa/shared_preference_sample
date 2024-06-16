@@ -1,16 +1,24 @@
+// ignore_for_file: public_member_api_docs
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preference_sample/presentations/shared/action_bottom_sheet.dart';
 
 /// アイコン設定を選択するボトムシート
-Future<bool?> showSelectIconSettingBottomSheet(BuildContext context) async {
+Future<bool?> showSelectIconSettingBottomSheet(
+  BuildContext context, {
+  ValueKey<String>? trueKey,
+  ValueKey<String>? falseKey,
+}) async {
   // 非同期処理の結果を管理するためのオブジェクト
   final completer = Completer<bool?>();
+
   await showActionBottomSheet(
     context,
     actions: [
       ActionItem(
+        valueKey: trueKey,
         icon: Icons.power,
         text: '有効',
         // completerにtrueを渡している
@@ -20,6 +28,7 @@ Future<bool?> showSelectIconSettingBottomSheet(BuildContext context) async {
         // onTap: () => true,
       ),
       ActionItem(
+        valueKey: falseKey,
         icon: Icons.power_off,
         text: '無効',
         // completerにfalseを渡している

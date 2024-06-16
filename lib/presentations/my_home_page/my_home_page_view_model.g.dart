@@ -7,7 +7,7 @@ part of 'my_home_page_view_model.dart';
 // **************************************************************************
 
 String _$myHomePageViewModelHash() =>
-    r'4f921ec3b02f50c4c94fdc0c211f43031a0ccc99';
+    r'3dd71e2fb4d6003ef83b888aff6a1f6893d582c5';
 
 /// MyHomePageで行う操作の処理を司るクラス
 ///
