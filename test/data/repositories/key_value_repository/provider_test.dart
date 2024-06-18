@@ -69,6 +69,9 @@ void main() {
       // 左が検査対象、右が該当する結果
       expect(iconSetting, isFalse);
 
+      // getIconSettingが１回呼ばれる
+      verify(keyValueRepository.getIconSetting()).called(1);
+
       // trueに変更する
       // getIconSettingのスタブを上書きする
       when(keyValueRepository.getIconSetting())
@@ -85,17 +88,9 @@ void main() {
       // 設定が変わってtrueになる
       expect(iconSetting, isTrue);
 
-      //　このテスト内で実行された処理の順番
-      verifyInOrder([
-        // 初期値を確認した時のget
-        keyValueRepository.getIconSetting(),
-        // ストリームを流す処理
-        keyValueRepository.onValueChange,
-        // 現在のiconSettingの値を取り出した際の初回get
-        keyValueRepository.getIconSetting(),
-        // onValueChangeを検知して２回目のget
-        keyValueRepository.getIconSetting(),
-      ]);
+      // getIconSettingが２回呼ばれる
+      // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
+      verify(keyValueRepository.getIconSetting()).called(2);
     });
 
     test(
@@ -114,6 +109,9 @@ void main() {
       // 左が検査対象、右が該当する結果
       expect(backgroundColorNumber, 1);
 
+      // getBackgroundColorNumberが１回呼ばれる
+      verify(keyValueRepository.getBackgroundColorNumber()).called(1);
+
       // getBackgroundColorNumberのスタブを上書きして、２を返す
       when(keyValueRepository.getBackgroundColorNumber())
           .thenAnswer((_) => Future.value(2));
@@ -131,17 +129,9 @@ void main() {
       // 設定が変わって２になる
       expect(backgroundColorNumber, 2);
 
-      //　このテスト内で実行された処理の順番
-      verifyInOrder([
-        // 初期値を確認した時のget
-        keyValueRepository.getBackgroundColorNumber(),
-        // ストリームを流す処理
-        keyValueRepository.onValueChange,
-        // 現在のbackgroundColorNumberの値を取り出した時の初回のget
-        keyValueRepository.getBackgroundColorNumber(),
-        // onValueChangeを検知して２回目のget
-        keyValueRepository.getBackgroundColorNumber(),
-      ]);
+      // getBackgroundColorNumberが２回呼ばれる
+      // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
+      verify(keyValueRepository.getBackgroundColorNumber()).called(2);
     });
 
     test('titleTextProviderは設定の変更をストリームで配信することができる', () async {
@@ -159,6 +149,9 @@ void main() {
       // 左が検査対象、右が該当する結果
       expect(tileText, iOS);
 
+      // getTileTextが１回呼ばれる
+      verify(keyValueRepository.getTileText()).called(1);
+
       // getTileTextのスタブを上書きして、'Android'を返す
       when(keyValueRepository.getTileText())
           .thenAnswer((_) => Future.value(android));
@@ -175,17 +168,9 @@ void main() {
       // 設定が変わって'Android'になる
       expect(tileText, android);
 
-      //　このテスト内で実行された処理の順番
-      verifyInOrder([
-        // 初期値を確認した時のget
-        keyValueRepository.getTileText(),
-        // ストリームを流す処理
-        keyValueRepository.onValueChange,
-        // 現在のbackgroundColorNumberの値を取り出した時の初回のget
-        keyValueRepository.getTileText(),
-        // onValueChangeを検知して２回目のget
-        keyValueRepository.getTileText(),
-      ]);
+      // getTileTextが２回呼ばれる
+      // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
+      verify(keyValueRepository.getTileText()).called(2);
     });
     test('titleTextProviderは設定の変更をストリームで配信することができる', () async {
       const firstSetting = CustomSetting(
@@ -212,6 +197,9 @@ void main() {
       // 左が検査対象、右が該当する結果
       expect(customSetting, firstSetting);
 
+      // getCustomSettingが１回呼ばれる
+      verify(keyValueRepository.getCustomSetting()).called(1);
+
       // getCustomSettingのスタブを上書きして、updateSettingを返す
       when(keyValueRepository.getCustomSetting())
           .thenAnswer((_) => Future.value(updateSetting));
@@ -228,17 +216,9 @@ void main() {
       // 設定が変わって'Android'になる
       expect(customSetting, updateSetting);
 
-      //　このテスト内で実行された処理の順番
-      verifyInOrder([
-        // 初期値を確認した時のget
-        keyValueRepository.getCustomSetting(),
-        // ストリームを流す処理
-        keyValueRepository.onValueChange,
-        // 現在のbackgroundColorNumberの値を取り出した時の初回のget
-        keyValueRepository.getCustomSetting(),
-        // onValueChangeを検知して２回目のget
-        keyValueRepository.getCustomSetting(),
-      ]);
+      // getCustomSettingが２回呼ばれる
+      // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
+      verify(keyValueRepository.getCustomSetting()).called(2);
     });
   });
 }

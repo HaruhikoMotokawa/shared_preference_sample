@@ -122,6 +122,7 @@ void main() {
 
       // タイトルのテキストを'iOS'で保存
       await keyValueRepository.setTitleText('iOS');
+      
       // 保存するカスタム設定を定義
       const saveCustomSetting = CustomSetting(
         iconSetting: true,
