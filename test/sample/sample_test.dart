@@ -2,15 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preference_sample/applications/log/logger.dart';
 
 void main() {
-  // 最初に使用する変数をここで宣言
-
-  // Riverpodを使用して状態管理やDIしている場合はテストの時も定義が必要
-  // lateで定義しておくことでテストごとに設定など柔軟にできるので大体ここでいい
-  // late ProviderContainer container;
-
-  // mockなどの対象があればここで宣言
-  // 例）　late MockHogeRepository repository;
-
   // テスト全体で使う変数があればここで宣言
   const someBool = true;
   const someString = '文字です';
@@ -22,14 +13,11 @@ void main() {
   // main直下に配置すると、全てのテストの最初に実行される
   setUp(() {
     logger.d('main直下で宣言したsetup');
-    // ProviderContainerを設定するoverrideとかをここで設定する
-    // container = ProviderContainer();
   });
   // テストが終了するごとに呼ばれる
   // StreamControllerやProviderContainerなどのリソース解放を行う
   tearDown(() {
     logger.d('main直下で宣言したtearDownを実行');
-    // container.dispose();
   });
 
   group('sample testその１', () {
@@ -58,19 +46,21 @@ void main() {
       expect(someIntList, isList);
       expect(someNull, isNull);
     });
+    test('少し複雑な期待値をマッチャーで表現する', () {
+      expect(someInt, lessThan(2));
+      expect(someIntList, hasLength(3));
+    });
     test('期待値を直接入れる場合', () {
       expect(someBool, true);
       expect(someString, '文字です');
       expect(someInt, 1);
     });
+
     test('比較対象の値を少し編集する場合', () {
       expect(someInt < 2, isTrue);
       expect(someIntList.length, 3);
     });
-    test('少し複雑な期待値をマッチャーで表現する', () {
-      expect(someInt, lessThan(2));
-      expect(someIntList, hasLength(3));
-    });
+
     test('メソッドをテストする', () {
       int? result;
 
@@ -91,8 +81,6 @@ void main() {
     // 引数のskipに値を入れるとflutter testコマンドでのtestにスキップされる
     // このフォルダ内でテストの実行はできる
     // カバレッジにまだ含めたくない場合などで使うといい。
-    // 型はdynamicだが、boolかStringでしか有効化できない
-    // ちなみにgroup自体にも引数`skip:`はある
     test('スキップされるテスト１', skip: '今回のリリースには関係ないのでスキップ', () {
       expect(someBool, isTrue);
     });
