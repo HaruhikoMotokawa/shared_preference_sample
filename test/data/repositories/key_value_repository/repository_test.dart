@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
@@ -24,19 +25,24 @@ void main() {
       container = ProviderContainer();
       keyValueRepository = container.read(keyValueRepositoryProvider);
     });
-    tearDownAll(() {
+    tearDown(() {
       container.dispose();
     });
 
     test('値の変更を監視する', () async {
+      // ストリームの値が流れてきたら格納する変数を定義
       final histories = <String>[];
 
+      // onValueChangeの購読を宣言し、ストリームが流れてきたらhistoriesに追加する
       keyValueRepository.onValueChange.listen(histories.add);
 
+      // setIconSettingメソッドを実行する
       await keyValueRepository.setIconSetting(value: true);
 
-      await Future<void>.delayed(const Duration(microseconds: 10));
+      // 結果が反映されるまで少し待機
+      await Future<void>.delayed(Durations.short1);
 
+      // 格納されている値は'iconSetting'である
       expect(histories, [KeyValueRepository.iconSettingKey]);
     });
 
@@ -122,7 +128,7 @@ void main() {
 
       // タイトルのテキストを'iOS'で保存
       await keyValueRepository.setTitleText('iOS');
-      
+
       // 保存するカスタム設定を定義
       const saveCustomSetting = CustomSetting(
         iconSetting: true,

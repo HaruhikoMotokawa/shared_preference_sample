@@ -51,7 +51,7 @@ void main() {
     });
 
     /// テスト後のクリーンアップを行う
-    tearDownAll(() async {
+    tearDown(() async {
       container.dispose();
       await onValueChangeController.close();
     });
@@ -91,6 +91,12 @@ void main() {
       // getIconSettingが２回呼ばれる
       // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
       verify(keyValueRepository.getIconSetting()).called(2);
+
+      // ここで合計何回呼ばれたかを確認したいのであればgetIconSettingに対する
+      // verifyはここでのみ呼び出す今回でいうとgetIconSettingに対して、
+      // すでにverifyを２回使っているので合計値を出すことはできない
+
+      // verify(keyValueRepository.getIconSetting()).called(3); // <= ❌
     });
 
     test(
