@@ -20,7 +20,7 @@ void main() {
     logger.d('main直下で宣言したtearDownを実行');
   });
 
-  group('sample testその１', () {
+  group('sample testその１', skip: 'サンプルのためカバレッジから除外', () {
     setUp(() {
       logger.d('group直下で宣言したsetup');
     });
