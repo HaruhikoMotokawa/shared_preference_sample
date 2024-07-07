@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -64,7 +63,7 @@ void main() {
       var iconSetting = await container.read(iconSettingProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 左が検査対象、右が該当する結果
       expect(iconSetting, isFalse);
@@ -76,6 +75,7 @@ void main() {
       // getIconSettingのスタブを上書きする
       when(keyValueRepository.getIconSetting())
           .thenAnswer((_) => Future.value(true));
+
       // ストリームを流す => await forの中の２回目のgetIconSettingが呼ばれる
       onValueChangeController.add(KeyValueRepository.iconSettingKey);
 
@@ -83,7 +83,7 @@ void main() {
       iconSetting = await container.read(iconSettingProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 設定が変わってtrueになる
       expect(iconSetting, isTrue);
@@ -110,7 +110,7 @@ void main() {
           await container.read(backgroundColorNumberProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 左が検査対象、右が該当する結果
       expect(backgroundColorNumber, 1);
@@ -130,7 +130,7 @@ void main() {
           await container.read(backgroundColorNumberProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 設定が変わって２になる
       expect(backgroundColorNumber, 2);
@@ -150,7 +150,7 @@ void main() {
       var tileText = await container.read(titleTextProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 左が検査対象、右が該当する結果
       expect(tileText, iOS);
@@ -169,7 +169,7 @@ void main() {
       tileText = await container.read(titleTextProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 設定が変わって'Android'になる
       expect(tileText, android);
@@ -178,7 +178,7 @@ void main() {
       // １回目が初期値を読み込むときで、onValueChangeを検知して２回目のget
       verify(keyValueRepository.getTileText()).called(2);
     });
-    test('titleTextProviderは設定の変更をストリームで配信することができる', () async {
+    test('customSettingProviderは設定の変更をストリームで配信することができる', () async {
       const firstSetting = CustomSetting(
         iconSetting: false,
         backgroundColorNumber: 0,
@@ -198,7 +198,7 @@ void main() {
       var customSetting = await container.read(customSettingProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 左が検査対象、右が該当する結果
       expect(customSetting, firstSetting);
@@ -217,7 +217,7 @@ void main() {
       customSetting = await container.read(customSettingProvider.future);
 
       // 非同期の処理なので一旦待機させる
-      await Future.delayed(Durations.short1, () => null);
+      await Future<void>.delayed(Duration.zero);
 
       // 設定が変わって'Android'になる
       expect(customSetting, updateSetting);

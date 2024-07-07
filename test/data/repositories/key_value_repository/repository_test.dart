@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preference_sample/data/repositories/key_value_repository/provider.dart';
@@ -7,29 +6,28 @@ import 'package:shared_preference_sample/domains/custom_setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  /// KeyValueRepositoryBaseを使ってKeyValueRepositoryの機能にアクセスする
+  late KeyValueRepositoryBase keyValueRepository;
+
+  /// Riverpodを使用しているので、ProviderContainerを経由する
+  late ProviderContainer container;
+
+  setUp(() async {
+    // 最初にmockの初期値を設定
+    // これを最初に実行しないとローカルデータベースに影響が出る
+    // 設定しておきたい初期値があるならここで設定する
+    SharedPreferences.setMockInitialValues({
+      // 例
+      // KeyValueRepository.iconSettingKey : true,
+    });
+    container = ProviderContainer();
+    keyValueRepository = container.read(keyValueRepositoryProvider);
+  });
+  tearDown(() {
+    container.dispose();
+  });
   group('key_value_repository test', () {
-    /// KeyValueRepositoryBaseを使ってKeyValueRepositoryの機能にアクセスする
-    late KeyValueRepositoryBase keyValueRepository;
-
-    /// Riverpodを使用しているので、ProviderContainerを経由する
-    late ProviderContainer container;
-
-    setUp(() async {
-      // 最初にmockの初期値を設定
-      // これを最初に実行しないとローカルデータベースに影響が出る
-      // 設定しておきたい初期値があるならここで設定する
-      SharedPreferences.setMockInitialValues({
-        // 例
-        // KeyValueRepository.iconSettingKey : true,
-      });
-      container = ProviderContainer();
-      keyValueRepository = container.read(keyValueRepositoryProvider);
-    });
-    tearDown(() {
-      container.dispose();
-    });
-
-    test('値の変更を監視する', () async {
+    test('値の変更を監視することができる', () async {
       // ストリームの値が流れてきたら格納する変数を定義
       final histories = <String>[];
 
@@ -40,7 +38,7 @@ void main() {
       await keyValueRepository.setIconSetting(value: true);
 
       // 結果が反映されるまで少し待機
-      await Future<void>.delayed(Durations.short1);
+      await Future<void>.delayed(Duration.zero);
 
       // 格納されている値は'iconSetting'である
       expect(histories, [KeyValueRepository.iconSettingKey]);
