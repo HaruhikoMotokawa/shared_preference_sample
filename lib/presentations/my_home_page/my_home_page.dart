@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -61,7 +63,9 @@ class MyHomePage extends HookConsumerWidget {
         children: [
           iconSetting.when(
             data: (data) {
-              logger.d('画面でwatchした場合のビルドです');
+              if (!Platform.isMacOS) {
+                logger.d('画面でwatchした場合のビルドです');
+              }
               return ListTile(
                 title: Text('画面でwatchした値の${TileType.iconSetting.title}'),
                 trailing: switch (data) {
@@ -85,8 +89,9 @@ class MyHomePage extends HookConsumerWidget {
         ],
       );
     }
-
-    logger.d('画面全体のビルドです');
+    if (!Platform.isMacOS) {
+      logger.d('画面全体のビルドです');
+    }
     return Scaffold(
       body: SafeArea(
         child: Center(

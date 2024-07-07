@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preference_sample/applications/log/logger.dart';
 import 'package:shared_preference_sample/domains/custom_setting.dart';
@@ -21,7 +23,9 @@ class InfoListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.d('${type.title}のタイルをビルド');
+    if (!Platform.isMacOS) {
+      logger.d('${type.title}のタイルをビルド');
+    }
     return switch (value) {
       null => ListTile(
           title: Text(type.title),
